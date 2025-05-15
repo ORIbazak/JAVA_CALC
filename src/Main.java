@@ -6,9 +6,9 @@ public class Main {
     public static void main(String[] args) {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
-        String STR  ="2+5*8+12-7";
+        String STR  ="3*(-1-2*3)";
         calculator calc = new calculator();
-        double answer=calc.Solve(STR);
+        double answer=calc.calc(STR);
         System.out.println(answer);
 
 

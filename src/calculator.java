@@ -13,24 +13,29 @@ public class calculator {
     }
     public token Solve(ArrayList<token> exp)
     {
-        for(int i=0; i<exp.size(); i++)
-        {
-            if (exp.get(i).token_type==t_type.operation & exp.get(i).type == Type.close_param)
-            {
-                int j =i-1;
-                while(exp.get(j).token_type!=t_type.param && exp.get(j).type==Type.close_param)
-                {
+        if(exp.size()==1)
+            return exp.getFirst();
+        ArrayList<token> lst = new ArrayList<>();
+        for(int i=0; i<exp.size(); i++) {
+            if (exp.get(i).token_type == t_type.param & exp.get(i).type == Type.close_param) {
+                int j = i - 1;
+                while (exp.get(j).token_type != t_type.param && exp.get(j).type != Type.open_param) {
                     j--;
                 }
-                ArrayList<token> temp = new ArrayList<>(exp.subList(0, j - 1));
-
-
+                    for (int a = 0; a < j; a++) { lst.add(exp.get(a)); }
+                    ArrayList<token> temp = new ArrayList<>();
+                    for(int b= j+1;b<i; b++) { temp.add(exp.get(b)); }
+                    lst.add(Solve(temp));
+                    for(int c = i+1;c<exp.size();c++) { lst.add(exp.get(c)); }
+                return Solve(lst);
 
             }
         }
+        return calc_kefel_hiluk(exp);
     }
     public token calc_plus_minus(ArrayList<token> exp)
     {
+        if(exp.size()==1) return exp.getFirst();
         int i =0;
         double ans = 0;
         token answer = new token();
@@ -64,15 +69,14 @@ public class calculator {
     }
     public token calc_kefel_hiluk(ArrayList<token> exp)
     {
+        if(exp.size()==1) return exp.getFirst();
         int i =0;
         ArrayList<token> temp = new ArrayList<>();
         while(i<exp.size()-1)
         {
             if (exp.get(i+1).token_type==t_type.operation){
             if(exp.get(i+1).type==Type.divide||exp.get(i+1).type==Type.multiply) {
-                if (i > 0) {
-                    temp.addAll(exp.subList(0, i -2));
-                }
+                for(int a =0;a<i;a++) { temp.add(exp.get(a)); }
                 token first = exp.get(i);
                 token second = exp.get(i + 2);
                 token op = exp.get(i + 1);

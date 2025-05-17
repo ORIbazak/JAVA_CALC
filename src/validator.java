@@ -15,7 +15,7 @@ public class validator
             if(ch1 ==constants.DIVIDE && ch2=='0') return false;
             if(ch1 ==constants.PARAM_OPEN&&ch2==constants.PARAM_CLOSE) return false;
             if(ch1==constants.PARAM_OPEN) open_counter++;//count how manby parameters
-            if((isOperator(ch1)&&isOperator(ch2))||ch2==constants.MINUS ) return false;
+            if((isOperator(ch1)&&isOperator(ch2))&& ch2!=constants.MINUS ) return false;
             if(ch2==constants.PARAM_CLOSE) close_counter++;
 
         }

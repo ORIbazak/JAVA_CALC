@@ -10,8 +10,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("equation:");
         String STR  = sc.nextLine();
-
         calculator calc = new calculator();
+        validator validator = new validator();
+
+        while(!validator.IsValid(STR))
+        {
+            System.out.println("Please enter a valid expression");
+            STR = sc.nextLine();
+        }
         double answer=calc.calc(STR);
         System.out.println(answer);
 

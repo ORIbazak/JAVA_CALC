@@ -1,11 +1,14 @@
+package app;
+import Parser.ParserContext;
+import Solver.SolverContext;
+
 import java.util.ArrayList;
 
 public class calculator {
-    tokenizer  tnizer = new tokenizer();
 
     public double calc(String str)
     {
-        ArrayList<token> exp = tnizer.tokenize(str);
+        ArrayList exp = ParserContext.tokenize(str);
         token t = Solve(exp);
         return t.value;
 
@@ -17,9 +20,9 @@ public class calculator {
             return exp.getFirst();
         ArrayList<token> lst = new ArrayList<>();
         for(int i=0; i<exp.size(); i++) {
-            if (exp.get(i).token_type == t_type.param & exp.get(i).type == Type.close_param) {
+            if (exp.get(i).token_type == t_type.param & exp.get(i).type == ')') {
                 int j = i - 1;
-                while (exp.get(j).token_type != t_type.param && exp.get(j).type != Type.open_param) {
+                while (exp.get(j).token_type != t_type.param && exp.get(j).type != '(') {
                     j--;
                 }
                     for (int a = 0; a < j; a++) { lst.add(exp.get(a)); }
@@ -37,14 +40,8 @@ public class calculator {
     {
         if(exp.size()==1) return exp.getFirst();
         int i =0;
-        double ans = 0;
-        token answer = new token();
-        answer.token_type=t_type.num;
-        token first = exp.get(0);
-        token second = exp.get(2);
-        token op = exp.get(1);
-        ans = calc_value(first,second,op);
-        answer.value=ans;
+        token answer = SolverContext.solve(exp.get(i), exp.get(i + 2),exp.get(i + 1));
+
         if(exp.size()<=3)  return answer;
         ArrayList<token> temp = new ArrayList<>();
         temp.add(answer);
@@ -52,21 +49,10 @@ public class calculator {
         return calc_plus_minus(temp);
 
     }
-    public double calc_value(token t1, token t2,token op)
-    {
-        double ans = 0;
-        Type opType = op.type;
-        double val1 = t1.value;
-        double val2 = t2.value;
-        ans = switch (opType) {
-            case plus -> val1 + val2;
-            case minus -> val1 - val2;
-            case multiply -> val1 * val2;
-            case divide -> val1 / val2;
-            default -> ans;
-        };
-        return ans;
-    }
+
+
+
+
     public token calc_kefel_hiluk(ArrayList<token> exp)
     {
         if(exp.size()==1) return exp.getFirst();
@@ -74,19 +60,13 @@ public class calculator {
         ArrayList<token> temp = new ArrayList<>();
         while(i<exp.size()-1)
         {
-            if (exp.get(i+1).token_type==t_type.operation){
-            if(exp.get(i+1).type==Type.divide||exp.get(i+1).type==Type.multiply) {
+            if (exp.get(i+1).token_type== t_type.operation){
+            if(exp.get(i+1).type== '/'||exp.get(i+1).type== '*') {
                 for(int a =0;a<i;a++) { temp.add(exp.get(a)); }
-                token first = exp.get(i);
-                token second = exp.get(i + 2);
-                token op = exp.get(i + 1);
-                double ans = calc_value(first, second, op);
-                token answer = new token();
-                answer.token_type = t_type.num;
-                answer.value = ans;
+
+                token answer = SolverContext.solve(exp.get(i), exp.get(i + 2),exp.get(i + 1));
                 temp.add(answer);
-                if (i + 3 < exp.size())
-                    temp.addAll(exp.subList(i + 3, exp.size()));
+                if (i + 3 < exp.size())  temp.addAll(exp.subList(i + 3, exp.size()));
                 return calc_kefel_hiluk(temp);
             }
             }

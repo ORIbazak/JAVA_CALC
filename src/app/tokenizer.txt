@@ -1,5 +1,7 @@
+package app;
+
 import java.util.ArrayList;
-public class tokenizer {
+public abstract class tokenizer {
 
 
     public ArrayList<token> tokenize(String str) {
@@ -107,9 +109,7 @@ public class tokenizer {
         t.value=-1;
         exp.add(t);
     }
-    public boolean isOperator(char c)
-    {
-        return (c == constants.DIVIDE || c == constants.MULTIPLY || c == constants.MINUS || c == constants.PLUS );
-    }
 
+
+    public abstract int Parse(String text, ArrayList<token> exp, int index);
 }

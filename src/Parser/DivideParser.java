@@ -12,6 +12,7 @@ public class DivideParser implements ParserStrategy {
         token t= new token();
         t.type = '/';
         t.token_type = t_type.operation;
+        exp.add(t);
         return index;
     }
 }
